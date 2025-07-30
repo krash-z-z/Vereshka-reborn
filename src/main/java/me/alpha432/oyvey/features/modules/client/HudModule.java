@@ -14,7 +14,7 @@ public class HudModule extends Module {
     public void onRender2D(Render2DEvent event) {
         event.getContext().drawTextWithShadow(
                 mc.textRenderer,
-                TextUtil.text("{global} %s {} %s", OyVey.Vereshka, OyVey.Reborn1.0),
+                TextUtil.text("{global} %s {} %s", OyVey.Vereshka, OyVey.Reborn1),
                 2, 2,
                 -1
         );
