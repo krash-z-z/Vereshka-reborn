@@ -12,26 +12,25 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 public class Criticals extends Module {
     public Criticals() {
         super("Criticals", "Makes you do critical hits", Category.COMBAT, true, false, false);
-    }
+    }public void onUpdate() {
+      if (!this.EntityHit.getBool() && !this.Bowing.getBool() && !this.VehicleInstakill.getBool()) {
+         Client.msg("§f§lModules:§r §7[§l" + this.name + "§r§7] false);
+         this.toggle(false);
+      } else {
+         if (this.ticksInningShoot > 0) {
+            this.ticksInningShoot--;
+         }
 
-    @Subscribe
-    private void onPacketSend(PacketEvent.Send event) {
-        if (event.getPacket() instanceof PlayerInteractEntityC2SPacket packet && packet.type.getType() == PlayerInteractEntityC2SPacket.InteractType.ATTACK) {
-            Entity entity = mc.world.getEntityById(packet.entityId);
-            if (entity == null
-                    || entity instanceof EndCrystalEntity
-                    || !mc.player.isOnGround()
-                    || !(entity instanceof LivingEntity)) return;
+         if (doAddPacket && yawS != 0.0F && pitchS != 0.0F) {
+            Minecraft.player.connection.sendPacket(new Rotation(yawS, pitchS, groundS));
+            doAddPacket = false;
+         }
 
-            boolean bl = mc.player.horizontalCollision;
-            mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX(), mc.player.getY() + 0.1f, mc.player.getZ(), false, bl));
-            mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX(), mc.player.getY(), mc.player.getZ(), false, bl));
-            mc.player.addCritParticles(entity);
-        }
-    }
+         boolean debug = false;
+         if (debug && Minecraft.player.isJumping()) {
+            Client.msg(Minecraft.player.posY + " | " + Minecraft.player.fallDistance, false);
+         }
+      }
+   
 
-    @Override
-    public String getDisplayInfo() {
-        return "Packet";
-    }
 }
