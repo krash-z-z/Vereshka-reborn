@@ -27,7 +27,7 @@ public class ClickGui
     public Setting<Float> rainbowSaturation = num("Saturation", 150.0f, 1.0f, 255.0f);
 
     public ClickGui() {
-        super("ClickGui", "Opens the ClickGui", Module.Category.CLIENT, true, false, false);
+        super("ClickGui", "clickgui", Module.Category.CLIENT, true, false, false);
         setBind(GLFW.GLFW_KEY_RIGHT_SHIFT);
         rainbowHue.setVisibility(v -> rainbow.getValue());
         rainbowBrightness.setVisibility(v -> rainbow.getValue());
